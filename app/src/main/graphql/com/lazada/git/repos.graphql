@@ -1,0 +1,16 @@
+query RepoListQuery($query: String!, $first: Int, $cursor: String) {
+   search(type: REPOSITORY, query: $query, first: $first, after: $cursor) {
+     edges {
+       cursor
+       node {
+         ... on Repository {
+           name
+           description
+           owner {
+             avatarUrl
+           }
+         }
+       }
+     }
+   }
+}

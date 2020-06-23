@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'com.apollographql.apollo'
+
+apollo {
+    generateKotlinModels.set(true)
+}
+
+android {
+    compileSdkVersion androidCompileSdk
+    buildToolsVersion androidBuildTools
+
+    defaultConfig {
+        applicationId "com.lazada.git"
+        minSdkVersion androidMinSdk
+        targetSdkVersion androidCompileSdk
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner 'com.lazada.git.ApplicationOverridingTestRunner'
+    }
+
+    buildTypes {
+        debug {
+            minifyEnabled false
+
+        }
+        release {
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+
+    def keys = new Properties()
+    file("../keys.properties").withInputStream {
+        stream -> keys.load(stream)
+    }
+
+    flavorDimensions("environment")
+
+    productFlavors {
+        stage {
+            buildConfigField "String", "GIT_ENDPOINT", "\"" + keys.GIT_GRAPH_QL_ENDPOINT + "\""
+            buildConfigField "String", "GIT_TOKEN", "\"" + keys.GIT_TOKEN_DEVELOPMENT + "\""
+        }
+        prod {
+            buildConfigField "String", "GIT_ENDPOINT", "\"" + keys.GIT_GRAPH_QL_ENDPOINT + "\""
+            buildConfigField "String", "GIT_TOKEN", "\"" + keys.GIT_TOKEN_RELEASE + "\""
+        }
+    }
+}
+
+dependencies {
+    kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+    api "com.google.dagger:dagger:$daggerVersion"
+    api "com.google.dagger:dagger-android:$daggerVersion"
+    api "com.google.dagger:dagger-android-support:$daggerVersion"
+
+    api "com.apollographql.apollo:apollo-runtime:$apolloVersion"
+    api "com.apollographql.apollo:apollo-coroutines-support:$apolloVersion"
+    api "com.apollographql.apollo:apollo-rx2-support:$apolloVersion"
+
+    api "com.squareup.picasso:picasso:$picassoVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rxJavaVersion"
+    api "io.reactivex.rxjava2:rxjava:$rxAndroidVersion"
+    api "com.facebook.shimmer:shimmer:$facebookShimmerVersion"
+
+    api "com.google.android.material:material:$materialVersion"
+    api "androidx.paging:paging-runtime-ktx:$androidArchPaging"
+    api "androidx.appcompat:appcompat:$appcompatVersion"
+    api "androidx.core:core-ktx:$androidCoreKtxVersion"
+    api "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleViewmodel"
+    api "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle"
+    api "androidx.lifecycle:lifecycle-extensions:$lifecycle"
+    api "androidx.cardview:cardview:$androidxCardViewVersion"
+    api "androidx.recyclerview:recyclerview:$androidxRecyclerViewVersion"
+    api "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion"
+    api "androidx.swiperefreshlayout:swiperefreshlayout:$androidxSwipRefreshLayoutVersion"
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+    kaptAndroidTest "com.google.dagger:dagger-compiler:$daggerVersion"
+    testImplementation "junit:junit:$junitVersion"
+    androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
+    androidTestImplementation "androidx.test:runner:$testRunnerVersion"
+    androidTestImplementation "androidx.test:rules:$testRunnerVersion"
+    androidTestImplementation "androidx.test.ext:junit:$junitExtVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+    androidTestImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockitoKotlinVersion"
+}
