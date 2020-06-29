@@ -6,9 +6,37 @@ This is a sample app that checks the top repositories on Github and shows title,
 
 Top repos is loosely defined as repos with the most stars. For simplicity, repos with stars greater than 1600 will be queried. At the moment of this wiki's writing, the query is expected to return 15k+ results.
 
+## Running the project
+
+1. Requirements
+- Android Studio 4.0 (Android SDK API level 29)
+
+![API 29](https://github.com/JujuBubble/Git/blob/master/wiki/images/1-AndroidStudio.png)
+	
+2. Clone this project: https://github.com/JujuBubble/Git
+    
+3. Go to `Git > Settings > Developer Settings > Personal access tokens`
+
+4. Generate a new token and copy it
+
+![Git Token](https://github.com/JujuBubble/Git/blob/master/wiki/images/4-Token.png)
+    
+5. Open the project, open `keys.properties` and paste the git token to `GIT_TOKEN_DEVELOPMENT`/`GIT_TOKEN_RELEASE`
+
+![Git Token](https://github.com/JujuBubble/Git/blob/master/wiki/images/5-GitToken.png)
+    
+6. Initially, some classes like `RepoListQuery` and `DaggerBaseComponent`”` will show an error, hit Build so the annotation processor can generate these classes
+
+![Build](https://github.com/JujuBubble/Git/blob/master/wiki/images/6-Build.png)
+    
+7. Run
+
+![Build Success](https://github.com/JujuBubble/Git/blob/master/wiki/images/7-BuildSuccess.png)
+
+
 ## Builds
 
-[Download the APK here](https://github.com/JujuBubble/Git/raw/master/wiki/builds/GitStage.apk)
+[Download the APK here](https://github.com/JujuBubble/Git/raw/master/wiki/builds/Git.apk.zip)
 
 ## Design Approach
 
